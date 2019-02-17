@@ -61,7 +61,6 @@ class TrashCanRegistration(Resource):
                 }, 500
 
     def get(self):
-        barcodereader()
         return {
             'message': 'hello_world'
             }
@@ -71,11 +70,12 @@ class UserConnectToTrashCan(Resource):
         data = UserConnectToTrashCanparser.parse_args()
         return {
             'message': 'User connected to trash can {}'.format(data['trashcan_id']),
+            'trashcan_id': data['trashcan_id'],
             'username': data['username'],
             'password': data['password']
         }
 
-
+'''
 class BarcodeVerification(Resource):
     """docstring for BarcodeVerification."""
     def post(self):
@@ -85,6 +85,7 @@ class BarcodeVerification(Resource):
             'trashcan_id': data['trashcan_id'],
             'barcode': data['barcode']
         }
+'''
 
 class UserRegistration(Resource):
     def post(self):
@@ -220,6 +221,3 @@ class UserResources(Resource):
 
     def connect_to_trash_can(can_id):
         return {'message': 'You connect to can {}'.format(can_id)}
-
-    def request_point(qr_code):
-        return {'message': 'You receive some points'}

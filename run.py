@@ -5,7 +5,7 @@ from flask_jwt_extended import JWTManager
 from camera import Camera
 from time import time
 from barcodereader import barcodereader
-import cv2
+import cv2, csv
 
 # initialize the server
 app = Flask(__name__)
@@ -62,7 +62,20 @@ def gen(camera):
         frame = camera.get_frame()
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + cv2.imencode('.jpg', frame)[1].tobytes() + b'\r\n\r\n')
-        if barcodereader(frame):
+        barcode = barcodereader(frame)
+        items = {}
+        if barcode:
+            with open("packaging_info.csv") as csvfile:
+                packaging_info = csv.reader(csvfile, delimiter=',', quotechar='|')
+                for row in packaging_info:
+                    items[row[0]] = {
+                        'name': row[1],
+                        'dimensions' : row[2],
+                        'material' : row[3],
+                        'redeem_val' : row[4]
+                        }
+                if barcode in items:
+                    print(items[barcode])
             break
 
 

@@ -20,7 +20,6 @@ def barcodereader(frame):
     barcodes = pyzbar.decode(frame)
     # loop over the detected barcodes
     if len(barcodes) > 0:
-        print("hi")
         barcode = barcodes[0]
         # extract the bounding box location of the barcode and draw
         # the bounding box surrounding the barcode on the image
@@ -36,12 +35,10 @@ def barcodereader(frame):
         # the timestamp + barcode to disk and update the set
         csv.write("{},{}\n".format(datetime.datetime.now(), barcodeData))
         csv.flush()
-        print('barcodeData', barcodeData)
-        print('barcodeType', barcodeType)
         # TODO:
         # search for item in database
         # plus point for user
         # close the output CSV file do a bit of cleanup
         print("[INFO] cleaning up...")
-        return 1
+        return barcodeData
     return 0
